@@ -3,13 +3,8 @@ import { restaurantList } from "../constants";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import RestaurantMenu from "./RestaurantMenu";
-
-
-function filterData(searchText, restaurants) {
-    return restaurants.filter((restau) => {
-        return restau?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase());
-    });
-}
+import { Link } from "react-router-dom";
+import { filterData } from "../utils/utilities";
 
 const Body = () => {
     const [allRestaurants, setAllRestaurants] = useState([]);
@@ -17,14 +12,12 @@ const Body = () => {
     const [searchText, setSearchText] = useState("");
     // console.log(searchText);
 
-    
-
     useEffect(() => {
         getRestaurants();
     }, []);
 
     async function getRestaurants() {
-        const data = await fetch("https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.425938120298223&lng=78.39342287825744&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
+        const data = await fetch("https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.0072341&lng=79.55839209999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
         const json = await data.json();
         // console.log(json);
 
@@ -68,7 +61,13 @@ const Body = () => {
         <div className='restaurant-list'>
             {
                 filteredRestaurants?.map((restaurant) => {           //filteredRestau with NO FILTERS is allRestau ONLY, RIGHT ...
-                    return <RestaurantCard {...restaurant.data} key={restaurant?.info?.id} resData={restaurant} />
+                    return (
+                                {/* <Link key={restaurant?.info?.id} to={"/restaurants/"+restaurant?.info?.id} style={{textDecoration: "none", color: "black"}}>
+                                    <RestaurantCard {...restaurant.data} resData={restaurant} />
+                                </Link> */},
+
+                                <RestaurantCard {...restaurant.data} resData={restaurant} key={restaurant?.info?.id}/>
+                            )
             })}
         </div>
       </div>

@@ -11,7 +11,7 @@ const RestaurantCard = (props) => {
   // const avgRatingString = props?.resData.info?.avgRatingString;
 
     return (
-      <Link to={"/restaurants/"+id}>
+      <Link to={"/restaurants/"+id} style={{textDecoration: "none", color: "black"}}>
         <div className='card'>
           <img alt="" src={
               IMG_CDN_URL+""+cloudinaryImageId
