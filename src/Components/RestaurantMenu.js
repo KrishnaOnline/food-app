@@ -58,7 +58,7 @@ const RestaurantMenu = () => {
     }
 
     if(!menu) {
-        return (<h1>Sorry! Menu of this Restaurant is NOT AVAILABLE at the Moment, Check Other Restaurants</h1>)
+        return (<h1>Sorry! Menu of this Restaurant is NOT AVAILABLE at the Moment, Checkout Other Restaurants</h1>)
     }
 
     return (
