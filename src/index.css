@@ -65,3 +65,8 @@ button {
   background-color: lightcyan;
   margin: 10px;
 }
+
+.menu {
+  display: flex;
+  gap: 100px;
+}
