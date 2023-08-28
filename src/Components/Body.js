@@ -2,6 +2,7 @@ import RestaurantCard from "./RestaurantCard";
 import { restaurantList } from "../constants";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
+import RestaurantMenu from "./RestaurantMenu";
 
 
 function filterData(searchText, restaurants) {
