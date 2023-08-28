@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { IMG_CDN_URL } from "../constants";
+import { IMG_CDN_URL, FETCH_MENU_URL } from "../constants";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 
 
 const RestaurantMenu = () => {
     const params = useParams();
-    const {id} = params;
+    const {resID} = params;
 
     const [restaurants, setRestaurants] = useState(null);
     const [menu, setMenu] = useState([]);
@@ -18,7 +18,7 @@ const RestaurantMenu = () => {
     }, []);
 
     async function getRestaurantMenu() {
-        const apiData = await fetch("https://corsproxy.io/?https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=17.425938120298223&lng=78.39342287825744&restaurantId="+id);
+        const apiData = await fetch(FETCH_MENU_URL + resID);
         const json = await apiData.json();
         // console.log(json);
         // console.log(1939);
@@ -58,7 +58,7 @@ const RestaurantMenu = () => {
     }
 
     if(!menu) {
-        return (<h1>Sorry! Menu of this Restaurant is NOT AVAILABLE at the Moment</h1>)
+        return (<h1>Sorry! Menu of this Restaurant is NOT AVAILABLE at the Moment, Please Check Other Restaurants</h1>)
     }
 
     return (
