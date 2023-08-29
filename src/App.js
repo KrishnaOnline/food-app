@@ -2,15 +2,19 @@ import './App.css';
 import Header from './Components/Header';
 import Body from './Components/Body';
 import Footer from './Components/Footer';
-import About from './Components/About';
+// import About from './Components/About';
 import Error from './Components/Error';
-
 // import { IMG_CDN_URL } from './constants';
 import { restaurantList } from './constants';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import Contact from './Components/Contact';
+// import Contact from './Components/Contact';
 import RestaurantMenu from './Components/RestaurantMenu';
 import Profile from './Components/Profile';
+import { Suspense, lazy } from 'react';
+import Shimmer from './Components/Shimmer';
+
+const About = lazy(() => import("./Components/About"));
+const Contact = lazy(() => import("./Components/Contact"));
 
 const App = () => {
   return (
@@ -46,7 +50,9 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About />,
+        element: <Suspense fallback={<Shimmer/>}>
+                      <About />
+                  </Suspense>,
         children: [
           {
             path: "profile",
@@ -56,7 +62,9 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/contact",
-        element: <Contact/>
+        element: <Suspense fallback={<Shimmer/>}>
+                    <Contact/>
+                 </Suspense>
       },
       {
         path: "/restaurants/:resID",

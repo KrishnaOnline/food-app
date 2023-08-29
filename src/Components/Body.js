@@ -1,50 +1,20 @@
 import RestaurantCard from "./RestaurantCard";
-import { restaurantList } from "../constants";
-import { useEffect, useState } from "react";
+// import { restaurantList } from "../constants";
 import Shimmer from "./Shimmer";
-import RestaurantMenu from "./RestaurantMenu";
-import { Link } from "react-router-dom";
 import { filterData } from "../utils/utilities";
+import useRestaurants from "../utils/useRestaurants";
+import useIsOnline from "../utils/useIsOnline";
 
 const Body = () => {
-    const [allRestaurants, setAllRestaurants] = useState([]);
-    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-    const [searchText, setSearchText] = useState("");
-    // console.log(searchText);
+    const [allRestaurants, filteredRestaurants, searchText, setAllRestaurants, setFilteredRestaurants, setSearchText] = useRestaurants();
 
-    useEffect(() => {
-        getRestaurants();
-    }, []);
+    let isOnline = useIsOnline();
+    if(!isOnline)
+        return (<h1>Looks Like You're Offline, Please Check Your Internet Connection</h1>)
+    if(allRestaurants?.length === 0) 
+        return (<Shimmer/>)
 
-    async function getRestaurants() {
-        const data = await fetch("https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.0072341&lng=79.55839209999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
-        const json = await data.json();
-        // console.log(json);
-
-        async function checkJsonData(jsonData){
-          for(let i=0;i<jsonData?.data?.cards.length;i++){
-            let checkData = jsonData?.data?.cards[i]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-            if(checkData!==undefined){
-              return checkData;
-            }
-          }
-        }
-
-        const resData=await checkJsonData(json);
-
-        setAllRestaurants(resData);
-        setFilteredRestaurants(resData);
-    }
-
-
-    // if(filteredRestaurants?.length === 0)
-    //     return <h1>No Restaurants Found with {searchText}</h1>
-
-    // if(!allRestaurants) return null;
-
-
-    return (allRestaurants?.length === 0) ? (<Shimmer/>) :
-    (
+    return (
       <div>
         <div className="search-container">
             <input type="text" className="search-input" placeholder="Search" value={searchText} 
