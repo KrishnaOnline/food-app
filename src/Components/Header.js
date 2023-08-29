@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useIsOnline from '../utils/useIsOnline';
 
 const Title = () => {
     return (
-      <a href='./'>
+      <a href='/'>
       <img className='logo'
         src={require('../assets/images/app-logo.png')}
         alt='logo'
@@ -14,6 +15,8 @@ const Title = () => {
   
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  const isOnline = useIsOnline();
 
     return (
       <div className='header'>
@@ -26,6 +29,7 @@ const Header = () => {
             <li>Cart</li>
           </ul>
         </div>
+        <h3>{isOnline ? '🟢 Online' : '🔴 Offline' }</h3>
         {
           (isLoggedIn ? (<button className='login' onClick={() => setIsLoggedIn(false)}>Login</button>) : (<button className='logout' onClick={() => setIsLoggedIn(true)}>Logout</button>))
         }

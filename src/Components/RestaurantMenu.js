@@ -1,57 +1,13 @@
 import { useParams } from "react-router-dom";
-import { IMG_CDN_URL, FETCH_MENU_URL } from "../constants";
-import { useEffect, useState } from "react";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
+import { IMG_CDN_URL } from "../constants";
 import Shimmer from "./Shimmer";
 
 
 const RestaurantMenu = () => {
-    const params = useParams();
-    const {resID} = params;
+    const {resID} = useParams();
 
-    const [restaurants, setRestaurants] = useState(null);
-    const [menu, setMenu] = useState([]);
-    // console.log(params);
-    // console.log(id);
-
-    useEffect(() => {
-        getRestaurantMenu();
-    }, []);
-
-    async function getRestaurantMenu() {
-        const apiData = await fetch(FETCH_MENU_URL + resID);
-        const json = await apiData.json();
-        // console.log(json);
-        // console.log(1939);
-
-        function checkRestaurant(jsonData) {
-            for(let i=0; i<jsonData?.data?.cards?.length; i++) {
-                let checkData = jsonData?.data?.cards[i]?.card?.card?.info;
-                if(checkData !== undefined) {
-                    return checkData;
-                }
-            }
-        }
-
-        function checkMenu(jsonData) {
-            for(let i=0; i<jsonData?.data?.cards?.length; i++) {
-                let checkData = jsonData?.data?.cards[i]?.groupedCard;
-                if(checkData !== undefined) {
-                    return checkData;
-                }
-            }
-        }
-        // data.cards[2].groupedCard.cardGroupMap.REGULAR.cards[1].card.card
-        // cardGroupMap.REGULAR.cards[1].card.card.itemCards
-
-        const apiDataRestau = await checkRestaurant(json);
-        const apiDataMenu = await checkMenu(json);
-        // console.log(apiDataRestau);
-        console.log(apiDataMenu);
-        setRestaurants(apiDataRestau);
-        setMenu(apiDataMenu?.cardGroupMap?.REGULAR?.cards[1]?.card?.card?.itemCards);
-    }
-
-
+    const [restaurants, menu] = useRestaurantMenu(resID);
 
     if(!restaurants) {
         return <Shimmer/>
@@ -65,6 +21,7 @@ const RestaurantMenu = () => {
         <div className="menu">
             <div>
                 <h2>{restaurants?.name}</h2>
+                <p><span style={{fontWeight: "600"}}>Restaurant ID:</span> {resID}</p>
                 <img alt="" src={IMG_CDN_URL+restaurants?.cloudinaryImageId}/>
                 <h3>{restaurants?.cuisines?.join(", ")}</h3>
                 <p>{restaurants?.avgRating} ⭐</p>
