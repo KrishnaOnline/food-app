@@ -40,7 +40,7 @@ const useRestaurantMenu = (resID) => {
         const apiDataRestau = await checkRestaurant(json);
         const apiDataMenu = await checkMenu(json);
         // console.log(apiDataRestau);
-        console.log(apiDataMenu);
+        // console.log(apiDataMenu);
         setRestaurants(apiDataRestau);
         setMenu(apiDataMenu?.cardGroupMap?.REGULAR?.cards[1]?.card?.card?.itemCards);
 

@@ -10,21 +10,37 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 // import Contact from './Components/Contact';
 import RestaurantMenu from './Components/RestaurantMenu';
 import Profile from './Components/Profile';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import Shimmer from './Components/Shimmer';
+import Instamart from './Components/Instamart';
+import UserContext from './utils/UserContext';
+import { useContext } from 'react';
+import { Provider } from 'react-redux';
+import store from './utils/store';
+import Cart from './Components/Cart';
+
 
 const About = lazy(() => import("./Components/About"));
 const Contact = lazy(() => import("./Components/Contact"));
 
 const App = () => {
+  const [user, setUser] = useState({
+    name: "Warangal",
+    email: "wgl.restau@mail.com"
+  });
+
   return (
     <>
-        <Header/>
-        {/* <About/>
-        <Body/>
-        <Contact/> */}
-        <Outlet/>
-        <Footer/>
+      <Provider store={store}>
+        <UserContext.Provider value={{user: user}}>
+          <Header/>
+          {/* <About/>
+          <Body/>
+          <Contact/> */}
+          <Outlet/>
+          <Footer/>
+        </UserContext.Provider>
+      </Provider>
     </>
   )
 }
@@ -61,10 +77,18 @@ const appRouter = createBrowserRouter([
         ]
       },
       {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
         path: "/contact",
         element: <Suspense fallback={<Shimmer/>}>
                     <Contact/>
                  </Suspense>
+      },
+      {
+        path: "/instamart",
+        element: <Instamart/>
       },
       {
         path: "/restaurants/:resID",
@@ -72,10 +96,6 @@ const appRouter = createBrowserRouter([
       }
     ],
   },
-  {
-    path: "/about",
-    element: <About />,
-  }
 ]);
 
 

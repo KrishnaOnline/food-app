@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useIsOnline from '../utils/useIsOnline';
+import { useSelector } from 'react-redux';
 
 const Title = () => {
     return (
@@ -18,6 +19,9 @@ const Header = () => {
 
   const isOnline = useIsOnline();
 
+  const cartItems = useSelector(store => store.cart.items);
+  console.log(cartItems);
+
     return (
       <div className='header'>
         <Title/>
@@ -26,7 +30,8 @@ const Header = () => {
             <Link to="/"><li>Home</li></Link>
             <Link to="/about"><li>About</li></Link>
             <Link to="/contact"><li>Contact</li></Link>
-            <li>Cart</li>
+            <Link to="/instamart"><li>Instamart</li></Link>
+            <Link to="/cart"><li>Cart - {cartItems.length}</li></Link>
           </ul>
         </div>
         <h3>{isOnline ? '🟢 Online' : '🔴 Offline' }</h3>

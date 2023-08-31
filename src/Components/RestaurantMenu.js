@@ -2,12 +2,24 @@ import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import { IMG_CDN_URL } from "../constants";
 import Shimmer from "./Shimmer";
+import {useDispatch} from "react-redux";
+import { addItem } from "../utils/cartSlice";
 
 
 const RestaurantMenu = () => {
     const {resID} = useParams();
 
     const [restaurants, menu] = useRestaurantMenu(resID);
+
+    const dispatch = useDispatch();
+
+    // const handleAddItems = () => {
+    //     dispatch(addItem("JK"))
+    // }
+
+    const addFoodItem = (item) => {
+        dispatch(addItem(item));
+    }
 
     if(!restaurants) {
         return <Shimmer/>
@@ -26,15 +38,22 @@ const RestaurantMenu = () => {
                 <h3>{restaurants?.cuisines?.join(", ")}</h3>
                 <p>{restaurants?.avgRating} ⭐</p>
                 <p>{restaurants?.costForTwoMessage}</p>
+
+                {/* <button onClick={() => handleAddItems()}>Add to Cart</button> */}
             </div>
             <div>
                 <h1>Menu</h1>
                 <ul>
                     {   
-                        (console.log(menu),
                         Object.values(menu)?.map((i) => {
-                            return (<li key={i?.card?.info?.id}>{i?.card?.info?.name}</li>)
-                        }))
+                            return (
+                                <div key={i?.card?.info?.id}>
+                                    <li>{i?.card?.info?.name} -
+                                        <button onClick={() => addFoodItem(i)}>Add</button>
+                                    </li>
+                                </div>    
+                            )
+                        })
                     }
                 </ul>
             </div>
